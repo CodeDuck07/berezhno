@@ -169,29 +169,57 @@
   const checklistItems = document.getElementById('checklistItems');
   const btnRestart = document.getElementById('btnRestart');
 
+  function createFlower(color, size, lobeCount) {
+    var el = document.createElement('span');
+    var step = 360 / lobeCount;
+    var p;
+
+    el.className = 'petal petal--flower ' + color;
+    for (p = 0; p < lobeCount; p++) {
+      var lobe = document.createElement('span');
+      lobe.className = 'petal__lobe';
+      lobe.style.setProperty('--lobe-rot', p * step + 'deg');
+      el.appendChild(lobe);
+    }
+    var center = document.createElement('span');
+    center.className = 'petal__center';
+    el.appendChild(center);
+    el.style.setProperty('--size', size + 'px');
+    return el;
+  }
+
   function createPetals() {
     var container = document.querySelector('.petals');
     var isMobile = window.matchMedia('(max-width: 600px)').matches;
-    var count = isMobile ? 10 : 24;
-    var maxDelay = isMobile ? 1.5 : 4;
+    var count = isMobile ? 8 + Math.floor(Math.random() * 3) : 24;
+    var maxDelay = isMobile ? 12 : 6;
     var colors = ['petal--yellow', 'petal--pink'];
+    var fallAnims = [
+      'petal-fall-a',
+      'petal-fall-b',
+      'petal-fall-c',
+      'petal-fall-d',
+      'petal-fall-e',
+    ];
 
     for (var i = 0; i < count; i++) {
       var color = colors[Math.floor(Math.random() * colors.length)];
       var size = isMobile
-        ? 18 + Math.random() * 10
-        : 16 + Math.random() * 12;
+        ? 22 + Math.random() * 12
+        : 18 + Math.random() * 14;
       var duration = isMobile
-        ? 10 + Math.random() * 4
-        : 12 + Math.random() * 8;
+        ? 22 + Math.random() * 13
+        : 18 + Math.random() * 10;
       var delay = Math.random() * maxDelay;
+      var left = isMobile
+        ? 5 + Math.random() * 90
+        : Math.random() * 100;
+      var anim = fallAnims[Math.floor(Math.random() * fallAnims.length)];
+      var el = createFlower(color, size, isMobile ? 5 : 8);
 
-      var el = document.createElement('span');
-      el.className = 'petal petal--solo ' + color;
-      el.style.left = Math.random() * 100 + '%';
-      el.style.setProperty('--size', size + 'px');
-      el.style.animationName = 'petal-fall-simple';
-      el.style.webkitAnimationName = 'petal-fall-simple';
+      el.style.left = left + '%';
+      el.style.animationName = anim;
+      el.style.webkitAnimationName = anim;
       el.style.animationTimingFunction = 'ease-in-out';
       el.style.webkitAnimationTimingFunction = 'ease-in-out';
       el.style.animationIterationCount = 'infinite';
