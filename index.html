@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Бережно — профилактика для девушек и женщин 25+</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+
+  <div class="clouds" aria-hidden="true">
+    <div class="cloud-layer cloud-layer--back">
+      <div class="cloud cloud--b1"></div>
+      <div class="cloud cloud--b2"></div>
+      <div class="cloud cloud--b3"></div>
+    </div>
+    <div class="cloud-layer cloud-layer--mid">
+      <div class="cloud cloud--m1"></div>
+      <div class="cloud cloud--m2"></div>
+      <div class="cloud cloud--m3"></div>
+    </div>
+    <div class="cloud-layer cloud-layer--front">
+      <div class="cloud cloud--f1"></div>
+      <div class="cloud cloud--f2"></div>
+      <div class="cloud cloud--f3"></div>
+    </div>
+    <div class="cloud-floor"></div>
+  </div>
+
+  <div class="petals" aria-hidden="true"></div>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="#" class="logo">
+        Бережно
+        <img class="logo__fish" src="assets/logo-fish.png" alt="" aria-hidden="true">
+      </a>
+      <nav class="nav">
+        <a href="#how">Как работает</a>
+        <a href="#test">Тест</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero" id="hero">
+      <div class="container hero__inner">
+        <span class="hero__badge">Демо-версия</span>
+        <h1 class="hero__title">Профилактика для девушек и женщин 25+ — мягко, понятно, вовремя</h1>
+        <p class="hero__subtitle">
+          Пройдите короткий тест и получите персональный чек-лист обследований.
+        </p>
+        <a href="#test" class="btn btn--primary">Пройти тест</a>
+      </div>
+    </section>
+
+    <!-- Как работает -->
+    <section class="section how" id="how">
+      <div class="container">
+        <h2 class="section__title">Как это работает</h2>
+        <p class="section__lead">Четыре простых шага к вашему плану профилактики</p>
+        <ol class="steps">
+          <li class="step">
+            <span class="step__num">1</span>
+            <h3 class="step__title">Ответьте на 5 вопросов</h3>
+            <p class="step__text">Короткий тест займёт около двух минут — без сложных медицинских терминов.</p>
+          </li>
+          <li class="step">
+            <span class="step__num">2</span>
+            <h3 class="step__title">Получите чек-лист</h3>
+            <p class="step__text">Персональный список обследований с учётом возраста, привычек и семейного анамнеза.</p>
+          </li>
+          <li class="step">
+            <span class="step__num">3</span>
+            <h3 class="step__title">Запишитесь к врачу</h3>
+            <p class="step__text">Чек-лист поможет понять, что обсудить с гинекологом или терапевтом на приёме.</p>
+          </li>
+          <li class="step">
+            <span class="step__num">4</span>
+            <h3 class="step__title">Получайте напоминания</h3>
+            <p class="step__text">В полной версии сервис мягко напомнит, когда пора повторить обследование.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Тест -->
+    <section class="section test" id="test">
+      <div class="container">
+        <h2 class="section__title">Короткий тест</h2>
+        <p class="section__lead">5 вопросов — и вы увидите пример персонального чек-листа</p>
+
+        <div class="test-card" id="testCard">
+          <div class="test-progress">
+            <div class="test-progress__bar" id="progressBar"></div>
+            <span class="test-progress__label" id="progressLabel">Вопрос 1 из 5</span>
+          </div>
+
+          <div class="test-body" id="testBody">
+            <!-- заполняется JS -->
+          </div>
+
+          <div class="test-actions">
+            <button type="button" class="btn btn--ghost" id="btnPrev" hidden>Назад</button>
+            <button type="button" class="btn btn--primary" id="btnNext">Далее</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Чек-лист -->
+    <section class="section checklist" id="checklist" hidden>
+      <div class="container">
+        <h2 class="section__title">Ваш чек-лист обследований</h2>
+        <p class="section__lead">Пример персонального плана — обсудите его с врачом</p>
+
+        <div class="checklist-card">
+          <div class="checklist-summary" id="checklistSummary"></div>
+          <ul class="checklist-items" id="checklistItems"></ul>
+          <p class="checklist-note">
+            Это демонстрационный результат. Решения о диагностике принимает только врач
+            с учётом вашего состояния и клинических рекомендаций.
+          </p>
+          <button type="button" class="btn btn--ghost" id="btnRestart">Пройти тест заново</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Дисклеймер -->
+    <section class="section disclaimer" id="disclaimer">
+      <div class="container">
+        <div class="disclaimer-card">
+          <h2 class="disclaimer__title">Важно знать</h2>
+          <ul class="disclaimer__list">
+            <li>«Бережно» — информационный сервис профилактики, а не медицинское приложение.</li>
+            <li>Мы не ставим диагнозы, не назначаем лечение и не заменяем очный приём врача.</li>
+            <li>Чек-лист основан на общих рекомендациях по профилактике и раннему выявлению рисков.</li>
+            <li>При любых тревожных симптомах обращайтесь к специалисту без отлагательств.</li>
+            <li>Данная страница — демо. Оплаты и регистрации нет.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="logo logo--small">
+        Бережно
+        <img class="logo__fish" src="assets/logo-fish.png" alt="" aria-hidden="true">
+      </span>
+      <p>© 2026 · Демо-проект · Забота о здоровье начинается с маленького шага</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
