@@ -165,7 +165,6 @@
   const btnNext = document.getElementById('btnNext');
   const testCard = document.getElementById('testCard');
   const checklistSection = document.getElementById('checklist');
-  const checklistSummary = document.getElementById('checklistSummary');
   const checklistItems = document.getElementById('checklistItems');
   const btnRestart = document.getElementById('btnRestart');
 
@@ -267,16 +266,6 @@
     updateProgress();
   }
 
-  function getAgeLabel() {
-    var map = {
-      '25-29': '25–29 лет',
-      '30-39': '30–39 лет',
-      '40-49': '40–49 лет',
-      '50+': '50+ лет',
-    };
-    return map[answers.age] || '';
-  }
-
   function renderChecklistItem(item, num) {
     var cls = item.priority ? ' checklist-item--priority' : '';
     var sublistHtml = '';
@@ -315,22 +304,6 @@
     var data = buildChecklist();
     var html = [];
     var num = 1;
-
-    var summaryIntro =
-      'На основе ваших ответов — маршрут для раннего выявления онкологических рисков. ' +
-      'Обсудите его с гинекологом. ';
-
-    if (data.priority) {
-      checklistSummary.innerHTML =
-        summaryIntro +
-        'Для возраста <strong>' + getAgeLabel() + '</strong> собран <strong>приоритетный маршрут</strong> ' +
-        'на основе ваших ответов. Рекомендуем записаться на комплексное обследование как можно скорее — всё за один визит.';
-    } else {
-      checklistSummary.innerHTML =
-        summaryIntro +
-        'Для возраста <strong>' + getAgeLabel() + '</strong> — ваш плановый маршрут профилактики. ' +
-        'Основное обследование — один визит раз в год.';
-    }
 
     html.push(renderSectionHeader(
       'Обследование',
