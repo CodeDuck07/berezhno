@@ -171,7 +171,9 @@
 
   function createPetals() {
     var container = document.querySelector('.petals');
-    var count = 34;
+    var isMobile = window.matchMedia('(max-width: 600px)').matches;
+    var count = isMobile ? 14 : 28 + Math.floor(Math.random() * 7);
+    var maxDelay = isMobile ? 3 : 5;
     var depths = ['petal--far', 'petal--mid', 'petal--near'];
     var colors = ['petal--yellow', 'petal--pink'];
     var p;
@@ -183,6 +185,10 @@
       var size = 16 + Math.random() * 12;
       var sway = 35 + Math.random() * 45;
       var rot = Math.floor(Math.random() * 360);
+      var duration = isMobile
+        ? 16 + Math.random() * 10
+        : 22 + Math.random() * 18;
+      var delay = Math.random() * maxDelay - Math.random() * duration * 0.85;
       var el;
 
       if (isFlower) {
@@ -206,8 +212,10 @@
       el.style.setProperty('--size', size + 'px');
       el.style.setProperty('--start-rot', rot + 'deg');
       el.style.setProperty('--sway', sway + 'px');
-      el.style.animationDuration = 22 + Math.random() * 18 + 's';
-      el.style.animationDelay = Math.random() * 14 + 's';
+      el.style.animationDuration = duration + 's';
+      el.style.webkitAnimationDuration = duration + 's';
+      el.style.animationDelay = delay + 's';
+      el.style.webkitAnimationDelay = delay + 's';
       container.appendChild(el);
     }
   }
