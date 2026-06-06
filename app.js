@@ -64,7 +64,7 @@
     var priority = isHighPriority();
     var exam = [
       {
-        title: 'Один визит — комплексное обследование',
+        title: 'Один визит',
         desc: 'Всё проходится за один приём, в одной клинике, в одно время.',
         period: priority ? 'Как можно скорее' : '1 раз в год',
         priority: priority,
