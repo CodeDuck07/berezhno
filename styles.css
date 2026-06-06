@@ -439,21 +439,22 @@ body {
   letter-spacing: 0.02em;
 }
 
-.logo__fish {
-  height: 1.48em;
+.logo__duck {
+  height: 0.92em;
   width: auto;
   flex-shrink: 0;
-  transform: translateY(0.02em);
-  opacity: 0.82;
-  filter: brightness(0.88) saturate(0.78);
+  margin-left: 0.1rem;
+  transform: translateY(0.05em);
+  opacity: 0.78;
+  filter: drop-shadow(0 0.5px 1.2px rgba(70, 90, 110, 0.32));
 }
 
 .logo--small {
   font-size: 1.21rem;
 }
 
-.logo--small .logo__fish {
-  height: 1.37em;
+.logo--small .logo__duck {
+  height: 0.86em;
 }
 
 .nav {
