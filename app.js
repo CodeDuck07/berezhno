@@ -169,9 +169,110 @@
   const checklistItems = document.getElementById('checklistItems');
   const btnRestart = document.getElementById('btnRestart');
 
+  function isMobileView() {
+    return window.matchMedia('(max-width: 600px)').matches;
+  }
+
+  function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function getPetalPeak(depth) {
+    if (depth === 'petal--far') return 0.45;
+    if (depth === 'petal--mid') return 0.65;
+    return 0.82;
+  }
+
+  function startPetalFall(el, opts) {
+    if (!el.animate) return;
+
+    var sway = opts.sway;
+    var rot = opts.rot;
+    var peak = opts.peak;
+
+    el.animate([
+      {
+        transform: 'translate3d(0,-8vh,0) rotate(' + (rot - 18) + 'deg)',
+        opacity: 0,
+      },
+      {
+        transform: 'translate3d(' + (sway * 0.85) + 'px,10vh,0) rotate(' + (rot + 30) + 'deg)',
+        opacity: peak,
+        offset: 0.06,
+      },
+      {
+        transform: 'translate3d(' + (-sway * 0.75) + 'px,22vh,0) rotate(' + (rot + 75) + 'deg)',
+        offset: 0.24,
+      },
+      {
+        transform: 'translate3d(' + (sway * 0.9) + 'px,34vh,0) rotate(' + (rot + 115) + 'deg)',
+        offset: 0.36,
+      },
+      {
+        transform: 'translate3d(' + (-sway * 0.95) + 'px,46vh,0) rotate(' + (rot + 160) + 'deg)',
+        offset: 0.48,
+      },
+      {
+        transform: 'translate3d(' + (sway * 0.7) + 'px,58vh,0) rotate(' + (rot + 205) + 'deg)',
+        offset: 0.6,
+      },
+      {
+        transform: 'translate3d(' + (-sway * 0.85) + 'px,70vh,0) rotate(' + (rot + 250) + 'deg)',
+        offset: 0.72,
+      },
+      {
+        transform: 'translate3d(' + (sway * 0.55) + 'px,82vh,0) rotate(' + (rot + 295) + 'deg)',
+        opacity: peak * 0.75,
+        offset: 0.84,
+      },
+      {
+        transform: 'translate3d(' + (-sway * 0.4) + 'px,108vh,0) rotate(' + (rot + 340) + 'deg)',
+        opacity: 0,
+      },
+    ], {
+      duration: opts.duration * 1000,
+      delay: opts.delay * 1000,
+      iterations: Infinity,
+      easing: 'ease-in-out',
+      fill: 'both',
+    });
+  }
+
+  function kickCloudAnimations() {
+    document.querySelectorAll('.cloud').forEach(function (cloud) {
+      var computed = window.getComputedStyle(cloud);
+      var duration = computed.animationDuration || computed.webkitAnimationDuration;
+      var delay = computed.animationDelay || computed.webkitAnimationDelay;
+      var timing = computed.animationTimingFunction || computed.webkitAnimationTimingFunction || 'ease-in-out';
+      var iteration = computed.animationIterationCount || computed.webkitAnimationIterationCount || 'infinite';
+      var name = computed.animationName || computed.webkitAnimationName;
+
+      if (!name || name === 'none') return;
+
+      cloud.style.webkitAnimation = 'none';
+      cloud.style.animation = 'none';
+      void cloud.offsetHeight;
+      cloud.style.webkitAnimation = name + ' ' + duration + ' ' + timing + ' ' + delay + ' ' + iteration;
+      cloud.style.animation = name + ' ' + duration + ' ' + timing + ' ' + delay + ' ' + iteration;
+    });
+  }
+
+  function initBackgroundAnimations() {
+    if (!isMobileView() || prefersReducedMotion()) return;
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(kickCloudAnimations);
+    });
+  }
+
+  function resumeBackgroundAnimations() {
+    if (prefersReducedMotion()) return;
+    initBackgroundAnimations();
+  }
+
   function createPetals() {
     var container = document.querySelector('.petals');
-    var isMobile = window.matchMedia('(max-width: 600px)').matches;
+    var isMobile = isMobileView();
     var count = isMobile ? 14 : 28 + Math.floor(Math.random() * 7);
     var maxDelay = isMobile ? 3 : 5;
     var depths = ['petal--far', 'petal--mid', 'petal--near'];
@@ -186,7 +287,7 @@
       var sway = 35 + Math.random() * 45;
       var rot = Math.floor(Math.random() * 360);
       var duration = isMobile
-        ? 16 + Math.random() * 10
+        ? 14 + Math.random() * 8
         : 22 + Math.random() * 18;
       var delay = Math.random() * maxDelay - Math.random() * duration * 0.85;
       var el;
@@ -212,11 +313,26 @@
       el.style.setProperty('--size', size + 'px');
       el.style.setProperty('--start-rot', rot + 'deg');
       el.style.setProperty('--sway', sway + 'px');
-      el.style.animationDuration = duration + 's';
-      el.style.webkitAnimationDuration = duration + 's';
-      el.style.animationDelay = delay + 's';
-      el.style.webkitAnimationDelay = delay + 's';
-      container.appendChild(el);
+
+      if (isMobile && !prefersReducedMotion()) {
+        el.classList.add('petal--waapi');
+        container.appendChild(el);
+        startPetalFall(el, {
+          sway: sway,
+          rot: rot,
+          peak: getPetalPeak(depth),
+          duration: duration,
+          delay: delay,
+        });
+      } else if (!isMobile) {
+        el.style.animationDuration = duration + 's';
+        el.style.webkitAnimationDuration = duration + 's';
+        el.style.animationDelay = delay + 's';
+        el.style.webkitAnimationDelay = delay + 's';
+        container.appendChild(el);
+      } else {
+        container.appendChild(el);
+      }
     }
   }
 
@@ -391,5 +507,14 @@
   btnRestart.addEventListener('click', restartTest);
 
   createPetals();
+  initBackgroundAnimations();
   renderQuestion();
+
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+      resumeBackgroundAnimations();
+    }
+  });
+
+  document.addEventListener('touchstart', resumeBackgroundAnimations, { once: true, passive: true });
 })();

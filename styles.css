@@ -59,9 +59,6 @@ body {
   pointer-events: none;
   z-index: 2;
   overflow: hidden;
-  will-change: transform;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 .petal {
@@ -69,8 +66,6 @@ body {
   top: -8vh;
   opacity: 0;
   will-change: transform, opacity;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -webkit-animation-name: petal-fall;
@@ -79,6 +74,13 @@ body {
   animation-timing-function: ease-in-out;
   -webkit-animation-iteration-count: infinite;
   animation-iteration-count: infinite;
+  -webkit-animation-play-state: running;
+  animation-play-state: running;
+}
+
+.petal--waapi {
+  -webkit-animation: none !important;
+  animation: none !important;
 }
 
 .petal--yellow {
@@ -261,14 +263,14 @@ body {
   height: min(50vh, 460px);
   pointer-events: none;
   z-index: 1;
-  will-change: transform;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 .cloud-layer {
   position: absolute;
   inset: 0;
+  will-change: transform;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .cloud-layer--back {
@@ -289,12 +291,12 @@ body {
   position: absolute;
   border-radius: 50%;
   will-change: transform;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   -webkit-animation: cloud-float ease-in-out infinite;
   animation: cloud-float ease-in-out infinite;
+  -webkit-animation-play-state: running;
+  animation-play-state: running;
 }
 
 .cloud-layer--back .cloud {
@@ -321,6 +323,7 @@ body {
     100px -8px 0 -6px #f8fbfe,
     35px -48px 0 -14px #ffffff,
     85px -52px 0 -10px #f5f9fd;
+  -webkit-animation-duration: 7s;
   animation-duration: 7s;
 }
 
@@ -333,7 +336,9 @@ body {
     45px -15px 0 -8px #ffffff,
     90px -5px 0 -5px #f8fbfe,
     40px -42px 0 -12px #ffffff;
+  -webkit-animation-duration: 6s;
   animation-duration: 6s;
+  -webkit-animation-delay: -2s;
   animation-delay: -2s;
 }
 
@@ -346,7 +351,9 @@ body {
     42px -14px 0 -8px #ffffff,
     80px -6px 0 -5px #f8fbfe,
     38px -40px 0 -12px #ffffff;
+  -webkit-animation-duration: 8s;
   animation-duration: 8s;
+  -webkit-animation-delay: -4s;
   animation-delay: -4s;
 }
 
@@ -363,6 +370,7 @@ body {
     48px -58px 0 -12px #ffffff,
     108px -62px 0 -8px #ffffff,
     168px -50px 0 -5px #ffffff;
+  -webkit-animation-duration: 5s;
   animation-duration: 5s;
 }
 
@@ -379,7 +387,9 @@ body {
     52px -62px 0 -10px #ffffff,
     115px -68px 0 -6px #ffffff,
     178px -58px 0 -3px #ffffff;
+  -webkit-animation-duration: 6.5s;
   animation-duration: 6.5s;
+  -webkit-animation-delay: -1.5s;
   animation-delay: -1.5s;
 }
 
@@ -393,7 +403,9 @@ body {
     110px 0px 0 -5px #ffffff,
     45px -55px 0 -12px #ffffff,
     100px -58px 0 -8px #ffffff;
+  -webkit-animation-duration: 7.5s;
   animation-duration: 7.5s;
+  -webkit-animation-delay: -3s;
   animation-delay: -3s;
 }
 
@@ -412,6 +424,7 @@ body {
     120px -72px 0 -4px #ffffff,
     185px -65px 0 0 #ffffff,
     250px -58px 0 -4px #ffffff;
+  -webkit-animation-duration: 5.5s;
   animation-duration: 5.5s;
 }
 
@@ -431,7 +444,9 @@ body {
     200px -72px 0 0 #ffffff,
     270px -68px 0 -2px #ffffff,
     340px -60px 0 -6px #ffffff;
+  -webkit-animation-duration: 6s;
   animation-duration: 6s;
+  -webkit-animation-delay: -2s;
   animation-delay: -2s;
 }
 
@@ -449,7 +464,9 @@ body {
     115px -74px 0 -4px #ffffff,
     178px -66px 0 0 #ffffff,
     240px -62px 0 -4px #ffffff;
+  -webkit-animation-duration: 7s;
   animation-duration: 7s;
+  -webkit-animation-delay: -1s;
   animation-delay: -1s;
 }
 
@@ -967,6 +984,21 @@ body {
 
 /* Адаптив */
 @media (max-width: 600px) {
+  .cloud-layer--back,
+  .cloud-layer--mid {
+    filter: none;
+  }
+
+  .petal--far,
+  .petal--near {
+    filter: none;
+  }
+
+  .cloud {
+    -webkit-animation-play-state: running !important;
+    animation-play-state: running !important;
+  }
+
   @-webkit-keyframes cloud-float {
     0%, 100% {
       -webkit-transform: translate3d(0, 0, 0);
