@@ -62,36 +62,19 @@
 
   function buildChecklist() {
     var priority = isHighPriority();
-    var steps = [
+    var exam = [
       {
-        title: 'УЗИ органов малого таза',
-        desc: 'Базовое исследование для оценки состояния репродуктивных органов.',
-        period: priority ? 'В ближайшие недели' : '1 раз в год',
-        priority: priority,
-      },
-      {
-        title: 'Осмотр гинеколога + онкоцитология (мазок)',
-        desc: 'Осмотр и скрининг шейки матки — ключевой шаг профилактики.',
+        title: 'Один визит — комплексное обследование',
+        desc: 'Всё проходится за один приём, в одной клинике, в одно время.',
         period: priority ? 'Как можно скорее' : '1 раз в год',
         priority: priority,
-      },
-      {
-        title: 'УЗИ молочных желёз',
-        desc: 'Раннее выявление изменений в молочных железах.',
-        period: 'В рамках того же визита',
-        priority: priority,
-      },
-      {
-        title: 'УЗИ щитовидной железы',
-        desc: 'Щитовидная железа влияет на цикл и общее самочувствие — стоит проверить.',
-        period: 'В рамках того же визита',
-        priority: priority,
-      },
-      {
-        title: 'Консультация по результатам УЗИ',
-        desc: 'Врач объяснит результаты и подскажет, нужны ли дополнительные шаги.',
-        period: 'После обследований',
-        priority: priority,
+        sublist: [
+          'Осмотр гинеколога + онкоцитология (мазок)',
+          'УЗИ органов малого таза',
+          'УЗИ молочных желёз',
+          'УЗИ щитовидной железы',
+          'Консультация по результатам УЗИ (в тот же день)',
+        ],
       },
       {
         title: 'Повторный приём по мазку',
@@ -165,7 +148,7 @@
 
     return {
       priority: priority,
-      exam: steps,
+      exam: exam,
       booking: booking,
       reminders: reminders,
       footnotes: footnotes,
@@ -276,12 +259,22 @@
 
   function renderChecklistItem(item, num) {
     var cls = item.priority ? ' checklist-item--priority' : '';
+    var sublistHtml = '';
+    if (item.sublist && item.sublist.length) {
+      sublistHtml =
+        '<ul class="checklist-item__sublist">' +
+        item.sublist.map(function (line) {
+          return '<li>' + line + '</li>';
+        }).join('') +
+        '</ul>';
+    }
     return (
       '<li class="checklist-item' + cls + '">' +
       '<span class="checklist-item__icon">' + num + '</span>' +
       '<div class="checklist-item__body">' +
       '<h4>' + item.title + '</h4>' +
-      '<p>' + item.desc + '</p>' +
+      (item.desc ? '<p>' + item.desc + '</p>' : '') +
+      sublistHtml +
       '<span class="checklist-item__tag">' + item.period + '</span>' +
       '</div></li>'
     );
@@ -306,16 +299,16 @@
     if (data.priority) {
       checklistSummary.innerHTML =
         'Для возраста <strong>' + getAgeLabel() + '</strong> собран <strong>приоритетный маршрут</strong> ' +
-        'на основе ваших ответов. Рекомендуем начать обследование в ближайшее время.';
+        'на основе ваших ответов. Рекомендуем записаться на комплексное обследование как можно скорее — всё за один визит.';
     } else {
       checklistSummary.innerHTML =
         'Для возраста <strong>' + getAgeLabel() + '</strong> — ваш плановый маршрут профилактики. ' +
-        'Пройдите шаги за один–два визита, повторяйте раз в год.';
+        'Основное обследование — один визит раз в год.';
     }
 
     html.push(renderSectionHeader(
-      'Комплексное гинекологическое обследование',
-      'Единый маршрут — пройдите по шагам за один–два визита.',
+      'Обследование',
+      'Один визит — все основные шаги в одной клинике.',
       data.priority
     ));
     data.exam.forEach(function (item) {
