@@ -316,12 +316,18 @@
     var html = [];
     var num = 1;
 
+    var summaryIntro =
+      'На основе ваших ответов — маршрут для раннего выявления онкологических рисков. ' +
+      'Обсудите его с гинекологом. ';
+
     if (data.priority) {
       checklistSummary.innerHTML =
+        summaryIntro +
         'Для возраста <strong>' + getAgeLabel() + '</strong> собран <strong>приоритетный маршрут</strong> ' +
         'на основе ваших ответов. Рекомендуем записаться на комплексное обследование как можно скорее — всё за один визит.';
     } else {
       checklistSummary.innerHTML =
+        summaryIntro +
         'Для возраста <strong>' + getAgeLabel() + '</strong> — ваш плановый маршрут профилактики. ' +
         'Основное обследование — один визит раз в год.';
     }
