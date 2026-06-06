@@ -172,26 +172,30 @@
   function createPetals() {
     var container = document.querySelector('.petals');
     var isMobile = window.matchMedia('(max-width: 600px)').matches;
-    var count = isMobile ? 12 : 24;
-    var maxDelay = isMobile ? 2 : 4;
-    var depths = ['petal--far', 'petal--mid', 'petal--near'];
+    var count = isMobile ? 10 : 24;
+    var maxDelay = isMobile ? 1.5 : 4;
     var colors = ['petal--yellow', 'petal--pink'];
 
     for (var i = 0; i < count; i++) {
-      var depth = depths[Math.floor(Math.random() * depths.length)];
       var color = colors[Math.floor(Math.random() * colors.length)];
-      var size = 16 + Math.random() * 12;
-      var sway = 35 + Math.random() * 45;
-      var rot = Math.floor(Math.random() * 360);
-      var duration = 12 + Math.random() * 8;
+      var size = isMobile
+        ? 18 + Math.random() * 10
+        : 16 + Math.random() * 12;
+      var duration = isMobile
+        ? 10 + Math.random() * 4
+        : 12 + Math.random() * 8;
       var delay = Math.random() * maxDelay;
 
       var el = document.createElement('span');
-      el.className = 'petal petal--solo ' + depth + ' ' + color;
+      el.className = 'petal petal--solo ' + color;
       el.style.left = Math.random() * 100 + '%';
       el.style.setProperty('--size', size + 'px');
-      el.style.setProperty('--start-rot', rot + 'deg');
-      el.style.setProperty('--sway', sway + 'px');
+      el.style.animationName = 'petal-fall-simple';
+      el.style.webkitAnimationName = 'petal-fall-simple';
+      el.style.animationTimingFunction = 'ease-in-out';
+      el.style.webkitAnimationTimingFunction = 'ease-in-out';
+      el.style.animationIterationCount = 'infinite';
+      el.style.webkitAnimationIterationCount = 'infinite';
       el.style.animationDuration = duration + 's';
       el.style.webkitAnimationDuration = duration + 's';
       el.style.animationDelay = delay + 's';
