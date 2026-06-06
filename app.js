@@ -107,22 +107,15 @@
 
     var reminders = [
       {
-        title: 'Отметьте месяц визита',
-        desc: 'После всех обследований отметьте в сервисе, когда прошли чек-ап.',
-        period: 'Демо',
+        title: '',
+        desc: '',
+        period: '',
         priority: false,
-      },
-      {
-        title: 'Напоминания перед повтором',
-        desc: 'Сервис напомнит за 2 месяца, за 1 месяц и в нужный месяц.',
-        period: 'Демо',
-        priority: false,
-      },
-      {
-        title: 'Повтор обследования',
-        desc: 'Плановый чек-ап — раз в год. Сроки уточняет врач.',
-        period: 'Раз в год',
-        priority: false,
+        sublist: [
+          'Отметьте месяц визита',
+          'Напоминания за 2 мес, 1 мес и в нужный месяц',
+          'Повтор обследования раз в год',
+        ],
       },
     ];
 
@@ -281,22 +274,34 @@
       '<li class="checklist-item' + cls + '">' +
       '<span class="checklist-item__icon">' + num + '</span>' +
       '<div class="checklist-item__body">' +
-      '<h4>' + item.title + '</h4>' +
+      (item.title ? '<h4>' + item.title + '</h4>' : '') +
       (item.desc ? '<p>' + item.desc + '</p>' : '') +
       sublistHtml +
-      '<span class="checklist-item__tag">' + item.period + '</span>' +
+      (item.period ? '<span class="checklist-item__tag">' + item.period + '</span>' : '') +
       '</div></li>'
     );
   }
 
-  function renderSectionHeader(title, subtitle, priority) {
-    var cls = priority ? ' checklist-item--priority' : '';
+  function renderChecklistGroup(title, subtitle, items, startNum, priority) {
+    var groupCls = priority ? ' checklist-group--priority' : '';
+    var itemsHtml = '';
+    var num = startNum;
+
+    items.forEach(function (item) {
+      itemsHtml += renderChecklistItem(item, num);
+      num++;
+    });
+
     return (
-      '<li class="checklist-item' + cls + '">' +
-      '<div class="checklist-item__body">' +
+      '<li class="checklist-group' + groupCls + '">' +
+      '<div class="checklist-group__head">' +
       '<h4>' + title + '</h4>' +
       (subtitle ? '<p>' + subtitle + '</p>' : '') +
-      '</div></li>'
+      '</div>' +
+      '<ul class="checklist-group__items">' +
+      itemsHtml +
+      '</ul>' +
+      '</li>'
     );
   }
 
@@ -305,27 +310,31 @@
     var html = [];
     var num = 1;
 
-    html.push(renderSectionHeader(
+    html.push(renderChecklistGroup(
       'Обследование',
       'Один визит — все основные шаги в одной клинике.',
+      data.exam,
+      num,
       data.priority
     ));
-    data.exam.forEach(function (item) {
-      html.push(renderChecklistItem(item, num));
-      num++;
-    });
+    num += data.exam.length;
 
-    html.push(renderSectionHeader('Куда записаться', null, false));
-    data.booking.forEach(function (item) {
-      html.push(renderChecklistItem(item, num));
-      num++;
-    });
+    html.push(renderChecklistGroup(
+      'Куда записаться',
+      null,
+      data.booking,
+      num,
+      false
+    ));
+    num += data.booking.length;
 
-    html.push(renderSectionHeader('Напоминания', 'Демо — как будет работать сервис в полной версии.', false));
-    data.reminders.forEach(function (item) {
-      html.push(renderChecklistItem(item, num));
-      num++;
-    });
+    html.push(renderChecklistGroup(
+      'Напоминания',
+      'В полной версии — напоминания о повторном обследовании',
+      data.reminders,
+      num,
+      false
+    ));
 
     if (data.footnotes.length) {
       html.push(
